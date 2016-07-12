@@ -3,12 +3,11 @@ package 'fontconfig'
 #--------
 # enable multiverse
 #--------
-# from http://askubuntu.com/a/173562
-execute 'enable multiverse' do
-  command "sed -i '/^# deb.*multiverse/ s/^# //' /etc/apt/sources.list"
-  not_if "egrep '^deb.*multiverse' /etc/apt/sources.list"
-  # notify "apt-get update" resource found in apt cookbook
-  notifies :run, resources(execute: 'apt-get update'), :immediately
+apt_repository 'security-ubuntu-multiverse' do
+  uri          'http://security.ubuntu.com/ubuntu'
+  distribution 'trusty-security'
+  components   ['multiverse']
+  deb_src      true
 end
 
 #--------
